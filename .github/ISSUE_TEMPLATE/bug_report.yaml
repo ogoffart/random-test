@@ -20,45 +20,29 @@ body:
     required: true
 - type: textarea
   attributes:
-    label: Expected Behavior
-    description: A concise description of what you expected to happen.
-  validations:
-    required: false
-- type: textarea
-  attributes:
-    label: Reproducable code
+    label: Reproducible Slint code
     description: If possible, please include the code that reproduce the problem
     placeholder: |
       component TestCase { /*...*/ }
     render: slint
   validations:
     required: false
-- type: input
-  attributes:
-    label: Slint version
-    description: What version of Slint are you using? (If this is a regression from a previous release, please mention that in the description)
-  validations:
-    required: false
-- type: input
+- type: textarea
   attributes:
     label: Environment
-    description: If relevant, please specify your platform/operating system and its version.
+    description: |
+      - What version of Slint are you using? (If this is a regression from a previous release, please mention that in the description)
+      - What is your platform/operating system, and its version. (eg: Windows 11/Ubuntu 22/Android/...)
+        If on Linux, please specify if using X11 or Wayland, and the desktop environment
+      - What programming language are you using for your application Logic (C++/Rust/JavaScript/Python/Other)
+      - What Slint backend and renderer is being used (Qt/Skia/FemtoVG/Software/...)
+    value: |
+      - Slint Version:
+      - Platform/OS:
+      - Programming Language:
+      - Backend/renderer:
   validations:
     required: false
-- type: dropdown
-  id: prog_language
-  attributes:
-    label: What programming language are you using Slint with?
-    options:
-      - Unspecified
-      - Rust
-      - C++
-      - JavaScript or TypeScript
-      - Python
-      - Other
-    default: 0
-  validations:
-    required: true
 - type: textarea
   attributes:
     label: Your product
