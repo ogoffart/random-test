@@ -1,0 +1,72 @@
+name: 🐞 Bug
+description: Report a bug
+labels: ["bug", "Need Triage"]
+body:
+-   type: markdown
+    attributes:
+      value: |
+        Thank you for filing a bug report! 🐛
+
+        This issue tracker is for tracking bugs. For questions or help on how to use Slint, please go to the ["Discussions" tab](https://github.com/slint-ui/slint/discussions)
+
+        Make sure to search the existing issue to check if the issue hasn't been filled already.
+- type: textarea
+  attributes:
+    label: Bug description
+    description: |
+        Please describe in details the bug and how to reproduce it.
+        Give steps on how to reproduce. What is the expected behavior and what do you see instead.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Expected Behavior
+    description: A concise description of what you expected to happen.
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Reproducable code
+    description: If possible, please include the code that reproduce the problem
+    placeholder: |
+      component TestCase { /*...*/ }
+    render: slint
+  validations:
+    required: false
+- type: input
+  attributes:
+    label: Slint version
+    description: What version of Slint are you using? (If this is a regression from a previous release, please mention that in the description)
+  validations:
+    required: false
+- type: input
+  attributes:
+    label: Environment
+    description: If relevant, please specify your platform/operating system and its version.
+  validations:
+    required: false
+- type: dropdown
+  id: prog_language
+  attributes:
+    label: What programming language are you using Slint with?
+    options:
+      - Unspecified
+      - Rust
+      - C++
+      - JavaScript or TypeScript
+      - Python
+      - Other
+    default: 0
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Your product
+    description: |
+      Tell us what you are developing with Slint.
+      How much of a blocker is this issue for your product.
+      This helps us to estimate the importance of the issue
+  validations:
+    required: false
+
+
