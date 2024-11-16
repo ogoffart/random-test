@@ -59,7 +59,7 @@ body:
 
 - type: textarea
   attributes:
-    label: Impact on Your Product
+    label: Product Impact
     description: |
       Tell us about your project:
       - What are you building with Slint?
