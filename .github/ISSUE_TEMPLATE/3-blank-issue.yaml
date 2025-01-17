@@ -1,6 +1,7 @@
 name: 🚧 Blank issue
 description: Issue without a template — ⚠️ Internal use only
 #labels: ["Need Triage"]
+type: "Bug"
 body:
 - type: markdown
   attributes:
