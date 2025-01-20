@@ -1,5 +1,5 @@
----
-name: 🚧 Blank issue
-description: Issue without a template — ⚠️ Internal use only
-#labels: ["Need Triage"]
----
+name: Blank Issue
+about: Create an issue with no predefined values (not recommended)
+title: ''
+labels: ''
+assignees: ''
