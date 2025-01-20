@@ -1,0 +1,4 @@
+name: 🚧 Blank issue
+description: Issue without a template — ⚠️ Internal use only
+#labels: ["Need Triage"]
+body:
