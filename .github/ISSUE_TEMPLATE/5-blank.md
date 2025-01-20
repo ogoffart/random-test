@@ -1,8 +1,7 @@
 ---
-name: Blank Issue 2
-about: Create an issue with no predefined values (not recommended)
+name: 🚧 Blank issue — ⚠️ Internal use only
+about: Issue without labels. (Only for Slint developers)
 title: ''
 labels: ''
 assignees: ''
-
 ---
