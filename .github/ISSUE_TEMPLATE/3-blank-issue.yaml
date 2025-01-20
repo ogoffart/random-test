@@ -1,20 +1,3 @@
 name: 🚧 Blank issue
 description: Issue without a template — ⚠️ Internal use only
 #labels: ["Need Triage"]
-body:
-- type: markdown
-  attributes:
-    value: |
-      🚨 **Internal Use Only** 🚨
-
-      This creates a new issue without the template.
-      Please **do not use** this template for bug reports, feature requests, or general questions.
-      This template will not automatically assign labels, make sure to manually set appropriate labels.
-
-      If you have questions or need help with Slint, visit our ["Discussions" tab](https://github.com/slint-ui/slint/discussions).
-      If you whish to report a bug or feature request, please use [another template](https://github.com/slint-ui/slint/issues/new/choose)
-- type: textarea
-  attributes:
-    label: "#"
-  validations:
-    required: true
