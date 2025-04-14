@@ -1,6 +1,7 @@
 name: ✨ Feature Request
 description: Suggest a new feature or improvement for Slint
-labels: ["enhancement", "Need Triage"]
+labels: ["Need Triage"]
+type: feature
 body:
 - type: markdown
   attributes:
