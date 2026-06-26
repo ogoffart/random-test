@@ -1,0 +1,65 @@
+name: Contribution agreement
+
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  contribution_agreement:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check whether the author is a team member
+        id: team
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          # Team members don't need the welcome or the agreement check:
+          # a commit authored from a @slint.dev address, or membership in the
+          # organization that owns the repository, counts as a team member.
+          ORG="${REPO%%/*}"
+          if gh api "/repos/$REPO/pulls/$PR/commits" --jq '.[].commit.author.email' | grep -qiE '@slint\.dev$' \
+             || gh api "/orgs/$ORG/members/$AUTHOR" >/dev/null 2>&1; then
+            echo "team=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "team=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Welcome first-time contributors
+        if: >
+          steps.team.outputs.team == 'false' &&
+          github.event.action == 'opened' &&
+          (github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR' ||
+           github.event.pull_request.author_association == 'FIRST_TIMER')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          gh pr comment "$PR" --repo "$REPO" --body-file - <<'EOF'
+          👋 Welcome, and thank you for your first contribution!
+
+          We're a small team, and reviews can take a while. If you don't hear back, nudge us in our [public chat](https://chat.slint.dev) so your pull request doesn't slip through the cracks.
+
+          📄 **Licensing:** by opening this pull request, you agree to license your contribution under the [MIT No Attribution license (MIT-0)](https://opensource.org/license/mit-0).
+          This keeps the project flexible to license, while leaving you free to reuse your own code in other projects.
+          Make sure you wrote it yourself, and that no third party — such as your employer — holds rights to it; if not, tell us first.
+          To confirm, tick the contribution agreement checkbox in the description above. The check below stays red until you do.
+          EOF
+
+      - name: Verify contribution agreement
+        if: steps.team.outputs.team == 'false'
+        env:
+          BODY: ${{ github.event.pull_request.body }}
+        run: |
+          if printf '%s' "$BODY" | grep -qiE '^[[:space:]]*-?[[:space:]]*\[[xX]\][[:space:]]*I license my contribution'; then
+            echo "Contribution agreement confirmed."
+          else
+            echo "::error::Tick the contribution agreement checkbox in the pull request description to confirm you license your contribution under MIT-0."
+            exit 1
+          fi
