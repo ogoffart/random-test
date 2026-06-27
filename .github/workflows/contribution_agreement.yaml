@@ -32,23 +32,36 @@ jobs:
           # fi
           echo "team=false" >> "$GITHUB_OUTPUT"
 
-      - name: Welcome first-time contributors
-        if: >
-          steps.team.outputs.team == 'false' &&
-          github.event.action == 'opened' &&
-          (github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR' ||
-           github.event.pull_request.author_association == 'FIRST_TIMER')
+      - name: Add the agreement checkbox to the description
+        if: steps.team.outputs.team == 'false' && github.event.action == 'opened'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          BODY: ${{ github.event.pull_request.body }}
+        run: |
+          # Make sure the checkbox is present even if the PR template was removed.
+          if printf '%s' "$BODY" | grep -qiE '\[[ xX]\][[:space:]]*I license my contribution'; then
+            echo "Checkbox already present in the description."
+          else
+            checkbox="- [ ] I license my contribution under the [MIT No Attribution license (MIT-0)](https://opensource.org/license/mit-0). I wrote it myself, and no third party (such as my employer) holds rights to it. If you can't agree, leave this unchecked and tell us instead."
+            printf '%s\n\n## Contribution agreement\n\n%s\n' "$BODY" "$checkbox" \
+              | gh pr edit "$PR" --repo "$REPO" --body-file -
+          fi
+
+      - name: Ask the contributor to sign
+        if: steps.team.outputs.team == 'false' && github.event.action == 'opened'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
         run: |
           gh pr comment "$PR" --repo "$REPO" --body-file - <<'EOF'
-          👋 Welcome, and thank you for your first contribution!
+          👋 Thanks for the PR!
+
+          Before we can merge it, please tick the **contribution agreement** checkbox in the description above to confirm you license your contribution under the [MIT No Attribution license (MIT-0)](https://opensource.org/license/mit-0). The check below stays red until you do.
 
           Reviews can take a while — if you don't hear back, nudge us in our [public chat](https://chat.slint.dev).
-
-          📄 By opening this PR you license your contribution under the [MIT No Attribution license (MIT-0)](https://opensource.org/license/mit-0): you wrote it yourself, and no third party (such as your employer) holds rights to it. To confirm, tick the contribution agreement box in the description above — the check below stays red until you do.
           EOF
 
       - name: Verify contribution agreement
